@@ -42,24 +42,24 @@ namespace ShalomMailServices.Helpers
 
         }
 
-        public FromUser GetFromUser() {
-            return new FromUser() { 
-                Email = "",
-                IDTipoEmail = Controllers.TypeEmail.Gmail,
-                NombreYApellido = "",
-                Password = ""
-                /*
-                 *  la contraseña no es la contraseña del correo sino Contraseñas de aplicaciones en google
-                    lo puede encontrar en Gestionar tu cuenta de Google,
-                    ahi en Buscar en la cuenta de Google, busca Contraseñas de aplicaciones,
-                    Coloca la contraseña de su cuenta, 
-                    luego Seleccionar aplicacion elige: Otra (nombre personalizado),
-                    luego escribe cualquier nombre, puede poner MailKit
-                    luego le da a generar,
-                    luego copia la contraseña que sale y lo pega en Password aqui en la clase
-                 */
-            };
-        }
+        //public FromUser GetFromUser() {
+        //    return new FromUser() { 
+        //        Email = "",
+        //        //IDTipoEmail = Controllers.TypeEmail.Gmail,
+        //        NombreYApellido = "",
+        //        Password = ""
+        //        /*
+        //         *  la contraseña no es la contraseña del correo sino Contraseñas de aplicaciones en google
+        //            lo puede encontrar en Gestionar tu cuenta de Google,
+        //            ahi en Buscar en la cuenta de Google, busca Contraseñas de aplicaciones,
+        //            Coloca la contraseña de su cuenta, 
+        //            luego Seleccionar aplicacion elige: Otra (nombre personalizado),
+        //            luego escribe cualquier nombre, puede poner MailKit
+        //            luego le da a generar,
+        //            luego copia la contraseña que sale y lo pega en Password aqui en la clase
+        //         */
+        //    };
+        //}
 
         public bool IsCorrectFileType(List<IFormFile> file) {
             bool result = true;

@@ -26,16 +26,13 @@ namespace ShalomMailServices.Controllers
         [HttpPost("send")]
         public async Task<IActionResult> SendEmail([FromBody] MailModel mail)
         {
-
-            var fromuser = _mailHelpers.GetFromUser();
-
             var validator = new MailModelValidation();
             var result = validator.Validate(mail);
             if (!result.IsValid)
             {
                 return BadRequest(result.Errors);
             }
-            await _mailHelpers.SendEmail(fromuser, mail);
+            await _mailHelpers.SendEmail(mail.FromUser, mail);
 
             return Ok(new { mensaje = "Mensaje Enviado" });
         }
@@ -50,7 +47,6 @@ namespace ShalomMailServices.Controllers
             if (!_mailHelpers.IsCorrectFileType(FileDetails))
                 return BadRequest(new { mensaje = "Algunos archivos no estan en el formato permitido" });
 
-            var fromuser = _mailHelpers.GetFromUser();
 
             var validator = new MailModelForFromValidation();
             var result = validator.Validate(mails);
@@ -68,7 +64,7 @@ namespace ShalomMailServices.Controllers
                 ToUser = touser
             };
 
-            var sendresult = await _mailHelpers.SendEmail(fromuser, mail, FileDetails);
+            var sendresult = await _mailHelpers.SendEmail(mails.FromUser, mail, FileDetails);
 
             return sendresult.isError ? BadRequest(sendresult) : Ok(sendresult);
         }
