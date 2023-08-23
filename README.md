@@ -1,5 +1,5 @@
 # MailService
-Servicio de Envio de Emails
+Servicio de Envio de Emails, tiene soporte para publicar en Docker
 
 # Primeros Pasos
 
