@@ -1,3 +1,4 @@
+using System.Net;
 using MailServices.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 //            webBuilder.UseUrls($"http://*:{port}/");
 //        });
 
-
-
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpsRedirection(options =>
+    {
+        options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+        options.HttpsPort = 443;
+    });
+}
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -28,7 +35,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
