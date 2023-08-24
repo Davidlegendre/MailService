@@ -1,4 +1,4 @@
-MailServices/bin
-MailServices/obj
+bin
+obj
 .vscode
-MailServices/.config
+.config
