@@ -12,16 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 //            var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 //            webBuilder.UseUrls($"http://*:{port}/");
 //        });
-builder.Services.AddCors(options =>
-    {
-        options.AddDefaultPolicy(
-            builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            });
-    });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -34,8 +24,8 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
 app.UseRouting();
+
 app.UseCors();
 
 app.UseAuthorization();
