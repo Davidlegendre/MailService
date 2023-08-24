@@ -19,8 +19,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<MailHelpers>();
 var app = builder.Build();
-app.UseSwagger();
-app.UseSwaggerUI();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -28,7 +27,8 @@ if (!app.Environment.IsDevelopment())
       .AllowAnyMethod()
       .WithOrigins("https://mailservice-496g-dev.fl0.io/"));
 }
-
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
