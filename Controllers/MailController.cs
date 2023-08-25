@@ -32,14 +32,15 @@ namespace MailServices.Controllers
             {
                 return BadRequest(result.Errors);
             }
-            await _mailHelpers.SendEmail(mail.FromUser, mail);
+            var mensaje = await _mailHelpers.SendEmail(mail);
 
-            return Ok(new { mensaje = "Mensaje Enviado" });
+            return Ok(mensaje);
         }
 
 
         [HttpPost("sendwithfile")]
-        public async Task<IActionResult> SendWithFile([FromForm] List<IFormFile> FileDetails, [FromForm] MailModelForFrom mails) {
+        public async Task<IActionResult> SendWithFile([FromForm] List<IFormFile> FileDetails, [FromForm] MailModelForFrom mails)
+        {
 
             if (FileDetails.Count == 0)
                 return BadRequest(new { mensaje = "Los archivos son requeridos" });
@@ -57,28 +58,30 @@ namespace MailServices.Controllers
 
             var touser = JsonConvert.DeserializeObject<List<ToUser>>(mails.ToUser);
 
-            var mail = new MailModel() {
+            var mail = new MailModel()
+            {
                 Body = mails.Body,
                 IsHTMLBody = mails.IsHTMLBody,
                 Subject = mails.Subject,
                 ToUser = touser
             };
 
-            var sendresult = await _mailHelpers.SendEmail(mails.FromUser, mail, FileDetails);
+            var sendresult = await _mailHelpers.SendEmail(mail, FileDetails);
 
             return sendresult.isError ? BadRequest(sendresult) : Ok(sendresult);
         }
 
         [HttpGet("TiposArchivosPermitidos")]
-        public List<FiletypeModelList> GetTiposFilesPermitidos() {
+        public List<FiletypeModelList> GetTiposFilesPermitidos()
+        {
             return _mailHelpers.GetFiletypeModels();
         }
 
     }
 
     public enum TypeEmail
-    { 
-      Gmail,
-      Outlook
+    {
+        Gmail,
+        Outlook
     }
 }

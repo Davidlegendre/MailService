@@ -6,8 +6,6 @@ namespace MailServices.Models
     public class MailModelForFrom
     {
         [Required]
-        public FromUser FromUser { get; set; }
-        [Required]
         public string ToUser { get; set; }
         [Required]
         public string Subject { get; set; }

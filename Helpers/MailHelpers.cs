@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using System.Runtime.CompilerServices;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using MimeKit;
@@ -12,14 +13,18 @@ namespace MailServices.Helpers
 {
     public class MailHelpers
     {
-        /*en el metodo GetFromUser, coloque sus credenciales*/
+        readonly EnvHelper _env;
+        public MailHelpers(EnvHelper envHelper)
+        {
+         _env = envHelper;   
+        }
 
         //si agrega mas, tambien debe actualizar IsCorrectFileType, esta mas abajo...
         Dictionary<FileType, string> fileTypes = new Dictionary<FileType, string>() {
             { FileType.Other, "" },
             { FileType.PDF, "application/pdf" },
             { FileType.DOCX, "application/vnd.openxmlformats-officedocument.wordprocessingml.document" },
-            {  FileType.PNG, "image/png" }, 
+            {  FileType.PNG, "image/png" },
             {FileType.JPG, "image/jpeg"}
         };
 
@@ -28,10 +33,11 @@ namespace MailServices.Helpers
             { TypeEmail.Outlook, "smtp.live.com" }
         };
 
-        public List<FiletypeModelList> GetFiletypeModels() { 
+        public List<FiletypeModelList> GetFiletypeModels()
+        {
             var lista = new List<FiletypeModelList>();
             var tipos = Enum.GetValues(typeof(FileType));
-            foreach(var type in tipos)
+            foreach (var type in tipos)
             {
                 if ((FileType)type != FileType.Other)
                 {
@@ -42,26 +48,30 @@ namespace MailServices.Helpers
 
         }
 
-        //public FromUser GetFromUser() {
-        //    return new FromUser() { 
-        //        Email = "",
-        //        //IDTipoEmail = Controllers.TypeEmail.Gmail,
-        //        NombreYApellido = "",
-        //        Password = ""
-        //        /*
-        //         *  la contraseña no es la contraseña del correo sino Contraseñas de aplicaciones en google
-        //            lo puede encontrar en Gestionar tu cuenta de Google,
-        //            ahi en Buscar en la cuenta de Google, busca Contraseñas de aplicaciones,
-        //            Coloca la contraseña de su cuenta, 
-        //            luego Seleccionar aplicacion elige: Otra (nombre personalizado),
-        //            luego escribe cualquier nombre, puede poner MailKit
-        //            luego le da a generar,
-        //            luego copia la contraseña que sale y lo pega en Password aqui en la clase
-        //         */
-        //    };
-        //}
+        public FromUser? GetFromUser()
+        {
+            var configVarENV = _env.GetEnviroments();
+            return configVarENV == null ? null : new FromUser()
+            {
+                Email = configVarENV.CompanyEmail,
+                //IDTipoEmail = Controllers.TypeEmail.Gmail,
+                NombreYApellido = configVarENV.CompanyName,
+                Password = configVarENV.CompanyPasswordEmailCredentialGoogle
+                /*
+                *  la contraseña no es la contraseña del correo sino Contraseñas de aplicaciones en google
+                   lo puede encontrar en Gestionar tu cuenta de Google,
+                   ahi en Buscar en la cuenta de Google, busca Contraseñas de aplicaciones,
+                   Coloca la contraseña de su cuenta, 
+                luego Seleccionar aplicacion elige: Otra (nombre personalizado),
+                   luego escribe cualquier nombre, puede poner MailKit
+                   luego le da a generar,
+                   luego copia la contraseña que sale y lo pega en Password aqui en la clase
+                */
+            };
+        }
 
-        public bool IsCorrectFileType(List<IFormFile> file) {
+        public bool IsCorrectFileType(List<IFormFile> file)
+        {
             bool result = true;
             foreach (var item in file)
             {
@@ -77,19 +87,24 @@ namespace MailServices.Helpers
             return result;
         }
 
-        public async Task<ResultSendEmail> SendEmail(FromUser fromuser, MailModel mail, List<IFormFile>? file = null) {
+        public async Task<ResultSendEmail> SendEmail(MailModel mail, List<IFormFile>? file = null)
+        {
             var message = new MimeMessage();
+            var fromuser = GetFromUser();
+            if(fromuser is null) return new ResultSendEmail(){ isError = true, Mensaje = "Error, Necesita configurar las variables de entorno: CompanyEmail => Email de la empresa, CompanyName => Nombre de la empresa, CompanyPasswordEmailCredentialGoogle => Password de Contraseñas de aplicaciones de Google"};
+
             message.From.Add(new MailboxAddress(fromuser.NombreYApellido, fromuser.Email));
             message.Subject = mail.Subject;
-            mail.ToUser.ForEach(x => {
-                message.To.Add(new MailboxAddress(x.Nombre, x.Email));                
+            mail.ToUser.ForEach(x =>
+            {
+                message.To.Add(new MailboxAddress(x.Nombre, x.Email));
             });
-           
+
 
             var builder = new BodyBuilder();
             if (!mail.IsHTMLBody) builder.TextBody = @mail.Body; else builder.HtmlBody = @mail.Body;
-           
-            if ( file != null)
+
+            if (file != null)
             {
                 var sum = file.Sum(x => x.Length);
 
