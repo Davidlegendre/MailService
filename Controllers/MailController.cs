@@ -34,7 +34,7 @@ namespace MailServices.Controllers
             }
             var mensaje = await _mailHelpers.SendEmail(mail);
 
-            return Ok(mensaje);
+            return mensaje.isError? BadRequest(mensaje) : Ok(mensaje);
         }
 
 
