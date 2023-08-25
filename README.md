@@ -1,5 +1,5 @@
 # MailService
-Servicio de Envio de Emails, tiene soporte para publicar en Docker
+Servicio de Envio de Emails.
 
 # Primeros Pasos
 
@@ -16,12 +16,7 @@ Servicio de Envio de Emails, tiene soporte para publicar en Docker
 - Luego le da a generar,
 - Luego copia la contraseña que sale y lo pega en Password en la API
 >Ejemplo:
-```{
-  "fromUser": {
-    "nombreYApellido": "string", <= aca vas a poner tu nombre y apellido
-    "email": "string", <= email tuyo
-    "password": "string" <= la contraseña sacada de los pasos de arriba
-  },
+```
   "toUser": [ <= es una lista
     {
       "nombre": "string", <= nombre a quien quieres enviar
@@ -33,6 +28,9 @@ Servicio de Envio de Emails, tiene soporte para publicar en Docker
   "body": "string" <= body
 }
 ```
+### Credenciales [new]
+> Los credenciales para poder hacer comunicacion al servicio del protocolo del email de Google se configura en las variables de entorno o se puede configurar en las configuraciones appsrttings.json
+> 
 ### Tamaño de Archivos
 > El tamaño de los archivos a enviar es: 24Mb
 
