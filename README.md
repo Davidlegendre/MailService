@@ -17,6 +17,7 @@ Servicio de Envio de Emails.
 - Luego copia la contraseña que sale y lo pega en Password en la API
 >Ejemplo:
 ```
+{
   "toUser": [ <= es una lista
     {
       "nombre": "string", <= nombre a quien quieres enviar
@@ -29,8 +30,13 @@ Servicio de Envio de Emails.
 }
 ```
 ### Credenciales [new]
-> Los credenciales para poder hacer comunicacion al servicio del protocolo del email de Google se configura en las variables de entorno o se puede configurar en las configuraciones appsrttings.json
-> 
+> Los credenciales para poder hacer comunicacion al servicio del protocolo del email de Google se configura en las variables de entorno o se puede configurar en las configuraciones appsettings.json
+> Estos son:
+```
+CompanyEmail => Email de la empresa de Google
+CompanyName => Nombre de la Empresa
+CompanyPasswordEmailCredentialGoogle => Password de Contraseñas de Aplicaciones de Google
+```
 ### Tamaño de Archivos
 > El tamaño de los archivos a enviar es: 24Mb
 
