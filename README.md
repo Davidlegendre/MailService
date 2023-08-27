@@ -33,7 +33,7 @@ Servicio de Envio de Emails.
 > Los credenciales para poder hacer comunicacion al servicio del protocolo del email de Google se configura en las variables de entorno o se puede configurar en las configuraciones appsettings.json
 > Estos son:
 ```
-CompanyEmail => Email de la empresa de Google
+CompanyEmail => Gmail de la empresa
 CompanyName => Nombre de la Empresa
 CompanyPasswordEmailCredentialGoogle => Password de Contraseñas de Aplicaciones de Google
 ```
