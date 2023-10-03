@@ -8,7 +8,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(x => x.AddPolicy("EnableCors", builder => {
+    builder.SetIsOriginAllowedToAllowWildcardSubdomains()
+    .AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 
+}));
 builder.Services.AddSingleton<MailHelpers>();
 builder.Services.AddSingleton<EnvHelper>();
 var app = builder.Build();
@@ -18,10 +22,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseRouting();
-
-app.UseCors();
+app.UseCors("EnableCors");
 
 app.UseAuthorization();
+
+
 
 app.MapControllers();
 
